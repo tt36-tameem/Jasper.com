@@ -1,0 +1,351 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-inter);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* ─── Automation builder animations ─────────────────────────────── */
+
+/* New node card appearing on canvas */
+@keyframes node-appear {
+  0%   { opacity: 0; transform: translateY(10px) scale(0.92); }
+  60%  { transform: translateY(-2px) scale(1.02); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Node picker modal spring-in */
+@keyframes picker-in {
+  0%   { opacity: 0; transform: scale(0.94) translateY(16px); }
+  70%  { transform: scale(1.015) translateY(-2px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes picker-out {
+  0%   { opacity: 1; transform: scale(1) translateY(0); }
+  100% { opacity: 0; transform: scale(0.95) translateY(8px); }
+}
+
+/* Config panel — spring pop from right */
+@keyframes panel-in {
+  0%   { opacity: 0;   transform: translateX(72px) scale(0.93); }
+  45%  { opacity: 1; }
+  68%  { transform: translateX(-7px) scale(1.012); }
+  84%  { transform: translateX(3px)  scale(0.998); }
+  100% { opacity: 1;   transform: translateX(0)    scale(1); }
+}
+@keyframes panel-out {
+  0%   { opacity: 1;   transform: translateX(0)    scale(1); }
+  25%  { transform: translateX(-4px) scale(1.006); }
+  100% { opacity: 0;   transform: translateX(64px) scale(0.94); }
+}
+
+/* Config panel icon pop */
+@keyframes icon-pop {
+  0%   { transform: scale(0.4) rotate(-15deg); opacity: 0; }
+  55%  { transform: scale(1.25) rotate(6deg); }
+  78%  { transform: scale(0.93) rotate(-2deg); }
+  100% { transform: scale(1) rotate(0deg);    opacity: 1; }
+}
+
+/* Config panel content cascade */
+@keyframes content-fade {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Backdrop fade */
+@keyframes backdrop-in  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes backdrop-out { from { opacity: 1; } to { opacity: 0; } }
+
+/* Branch columns expand */
+@keyframes branch-in {
+  0%   { opacity: 0; transform: scaleY(0.9) translateY(-8px); transform-origin: top center; }
+  100% { opacity: 1; transform: scaleY(1)   translateY(0);    transform-origin: top center; }
+}
+
+/* Connector + ring pulse on click */
+@keyframes connector-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(0,0,0,0.18); }
+  70%  { box-shadow: 0 0 0 9px rgba(0,0,0,0); }
+  100% { box-shadow: 0 0 0 0 rgba(0,0,0,0); }
+}
+
+/* Gentle float for empty-state CTA */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-5px); }
+}
+
+/* Canvas fade-in on load */
+@keyframes canvas-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-node-appear   { animation: node-appear 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.animate-picker-in     { animation: picker-in   0.26s cubic-bezier(0.34, 1.4,  0.64, 1) both; }
+.animate-picker-out    { animation: picker-out  0.16s cubic-bezier(0.4,  0,    1,    1) both; }
+.animate-backdrop-in   { animation: backdrop-in  0.18s ease both; }
+.animate-backdrop-out  { animation: backdrop-out 0.16s ease both; }
+.animate-panel-in      { animation: panel-in  0.42s cubic-bezier(0.34, 1.45, 0.64, 1) both; }
+.animate-panel-out     { animation: panel-out 0.22s cubic-bezier(0.4,  0,    1,    1) both; }
+.animate-icon-pop      { animation: icon-pop  0.40s cubic-bezier(0.34, 1.56, 0.64, 1) both; animation-delay: 60ms; }
+.animate-content-fade  { animation: content-fade 0.32s cubic-bezier(0.22, 1, 0.36, 1) both; animation-delay: 90ms; }
+.animate-branch-in     { animation: branch-in 0.3s  cubic-bezier(0.34, 1.2, 0.64, 1) both; }
+.animate-canvas-in     { animation: canvas-in 0.5s  cubic-bezier(0.22, 1, 0.36, 1) both; }
+.animate-float         { animation: float 3s ease-in-out infinite; }
+.animate-connector-ring { animation: connector-ring 0.4s ease-out; }
+
+/* ─── Workflow builder utilities ─────────────────────────────────── */
+.label {
+  @apply text-[11px] font-semibold text-zinc-400 uppercase tracking-wider block mb-1.5;
+}
+.field {
+  @apply w-full px-3 py-2 text-[13px] text-zinc-900 dark:text-zinc-100 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg outline-none focus:border-zinc-400 dark:focus:border-zinc-500 transition-colors;
+}
+
+/* ─── Brand variables (overridden by BrandingProvider via JS) ───── */
+:root {
+  --brand-primary: #18181b;
+  --brand-accent:  #52525b;
+}
+
+/* ─── Brand utilities ────────────────────────────────────────────── */
+.brand-btn {
+  background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-accent) 100%);
+  color: white;
+  transition: opacity 0.15s, transform 0.1s;
+}
+.brand-btn:hover  { opacity: 0.88; }
+.brand-btn:active { transform: scale(0.98); }
+
+.brand-icon-active { color: var(--brand-primary); }
+.brand-pill-active {
+  background: color-mix(in srgb, var(--brand-primary) 12%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--brand-primary) 20%, transparent);
+}
+
+/* ─── Mochi Zinc Light Mode ─────────────────────────────────────── */
+:root {
+  /* Page shell: zinc-50 */
+  --background:           oklch(0.985 0.001 286);
+  --foreground:           oklch(0.145 0.003 286);
+
+  /* Elevated surfaces: pure white */
+  --card:                 oklch(1 0 0);
+  --card-foreground:      oklch(0.145 0.003 286);
+  --popover:              oklch(1 0 0);
+  --popover-foreground:   oklch(0.145 0.003 286);
+
+  /* Actions */
+  --primary:              oklch(0.145 0.003 286);   /* zinc-900 */
+  --primary-foreground:   oklch(0.985 0.001 286);   /* zinc-50  */
+
+  /* Subtle fills */
+  --secondary:            oklch(0.967 0.001 286);   /* zinc-100 */
+  --secondary-foreground: oklch(0.145 0.003 286);
+  --muted:                oklch(0.967 0.001 286);   /* zinc-100 */
+  --muted-foreground:     oklch(0.491 0.004 286);   /* zinc-500 */
+  --accent:               oklch(0.967 0.001 286);
+  --accent-foreground:    oklch(0.145 0.003 286);
+
+  /* System */
+  --destructive:          oklch(0.577 0.245 27.325);
+
+  /* Borders: zinc-200 for standard, zinc-100 for subtle table dividers */
+  --border:               oklch(0.920 0.003 286);   /* zinc-200 */
+  --input:                oklch(0.920 0.003 286);
+  --ring:                 oklch(0.665 0.005 286);   /* zinc-400 */
+
+  /* Chart */
+  --chart-1:              oklch(0.488 0.243 264.376);
+  --chart-2:              oklch(0.696 0.17 162.48);
+  --chart-3:              oklch(0.769 0.188 70.08);
+  --chart-4:              oklch(0.627 0.265 303.9);
+  --chart-5:              oklch(0.645 0.246 16.44);
+
+  --radius:               0.5rem;
+
+  /* Sidebar: white with zinc-100 border */
+  --sidebar:              oklch(1 0 0);
+  --sidebar-foreground:   oklch(0.145 0.003 286);
+  --sidebar-primary:      oklch(0.145 0.003 286);
+  --sidebar-primary-foreground: oklch(0.985 0.001 286);
+  --sidebar-accent:       oklch(0.967 0.001 286);
+  --sidebar-accent-foreground: oklch(0.145 0.003 286);
+  --sidebar-border:       oklch(0.967 0.001 286);  /* zinc-100 — ultra-subtle */
+  --sidebar-ring:         oklch(0.665 0.005 286);
+}
+
+/* ─── Mochi Zinc Dark Mode ──────────────────────────────────────── */
+.dark {
+  /* Page shell: near-black zinc */
+  --background:           oklch(0.09  0.003 286);
+  --foreground:           oklch(0.985 0.001 286);
+
+  /* Elevated surfaces */
+  --card:                 oklch(0.13  0.003 286);
+  --card-foreground:      oklch(0.985 0.001 286);
+  --popover:              oklch(0.13  0.003 286);
+  --popover-foreground:   oklch(0.985 0.001 286);
+
+  /* Actions */
+  --primary:              oklch(0.985 0.001 286);
+  --primary-foreground:   oklch(0.145 0.003 286);
+
+  /* Subtle fills */
+  --secondary:            oklch(0.19  0.003 286);
+  --secondary-foreground: oklch(0.985 0.001 286);
+  --muted:                oklch(0.19  0.003 286);
+  --muted-foreground:     oklch(0.56  0.004 286);
+  --accent:               oklch(0.19  0.003 286);
+  --accent-foreground:    oklch(0.985 0.001 286);
+
+  /* System */
+  --destructive:          oklch(0.70  0.191 22.18);
+
+  /* Borders */
+  --border:               oklch(0.24  0.003 286);
+  --input:                oklch(0.24  0.003 286);
+  --ring:                 oklch(0.44  0.004 286);
+
+  /* Charts (slightly brighter in dark) */
+  --chart-1:              oklch(0.55  0.243 264.376);
+  --chart-2:              oklch(0.72  0.17  162.48);
+  --chart-3:              oklch(0.80  0.188 70.08);
+  --chart-4:              oklch(0.68  0.265 303.9);
+  --chart-5:              oklch(0.70  0.246 16.44);
+
+  /* Sidebar: slightly lighter than page */
+  --sidebar:              oklch(0.11  0.003 286);
+  --sidebar-foreground:   oklch(0.985 0.001 286);
+  --sidebar-primary:      oklch(0.985 0.001 286);
+  --sidebar-primary-foreground: oklch(0.145 0.003 286);
+  --sidebar-accent:       oklch(0.19  0.003 286);
+  --sidebar-accent-foreground:  oklch(0.985 0.001 286);
+  --sidebar-border:       oklch(0.19  0.003 286);
+  --sidebar-ring:         oklch(0.44  0.004 286);
+}
+
+/* ─── Theme transition — circular reveal via View Transitions API ── */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-old(root) {
+  z-index: 1;
+}
+::view-transition-new(root) {
+  z-index: 2;
+}
+
+/* ─── Base ───────────────────────────────────────────────────────── */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+/* ─── Typography Refinements ─────────────────────────────────────── */
+@layer base {
+  h1, h2, h3, h4 {
+    letter-spacing: -0.025em;
+    font-weight: 500;
+  }
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────────────── */
+::-webkit-scrollbar       { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: oklch(0.839 0.003 286); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: oklch(0.665 0.005 286); }
+
+/* ─── Notes rich-text inline styles ─────────────────────────────── */
+[data-block-editor] b, [data-block-editor] strong { font-weight: 700; }
+[data-block-editor] i, [data-block-editor] em     { font-style: italic; }
+[data-block-editor] u                             { text-decoration: underline; }
+[data-block-editor] s, [data-block-editor] strike { text-decoration: line-through; }
+[data-block-editor] mark                          { border-radius: 3px; padding: 1px 3px; }
+[data-block-editor] code                          { background: #f4f4f5; color: #d97706; padding: 1px 5px; border-radius: 4px; font-family: monospace; font-size: 0.875em; }
+.dark [data-block-editor] code                    { background: #27272a; color: #fb923c; }
+
+/* ─── Sidebar title glow-in animation ───────────────────────────── */
+@keyframes titleGlow {
+  0%   { opacity: 0; filter: none; }
+  25%  { opacity: 1; filter: drop-shadow(0 0 8px var(--brand-primary)) brightness(1.25); }
+  60%  { opacity: 1; filter: drop-shadow(0 0 4px var(--brand-primary)) brightness(1.1); }
+  100% { opacity: 1; filter: none; }
+}
+.sidebar-title-glow {
+  animation: titleGlow 1.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ─── Slide rich-text placeholder ───────────────────────────────── */
+[contenteditable][data-ph]:empty::before {
+  content: attr(data-ph);
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* ─── Slide rich-text editing: purple focus outline (text selection stays default) ──
+   Must use :focus-visible + !important to beat the global
+   `:focus-visible { outline: ... !important }` rule from shadcn/tailwind.css. */
+[data-slide-edit]:focus,
+[data-slide-edit]:focus-visible,
+[data-slide-edit]:focus-within {
+  outline: 2px solid #8b3dff !important;
+  outline-offset: 3px !important;
+}
